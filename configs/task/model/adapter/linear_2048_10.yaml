@@ -1,1 +1,4 @@
 # You need to fill out this configuration file
+_target_: adapters.LinearAdapter #This is to instantiate the adapter
+in_features: 2048 #This is the number of input features
+out_features: 10 #This is the number of output features

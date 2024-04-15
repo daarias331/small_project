@@ -59,7 +59,7 @@ class CIFAR10Classification(TrainingTask):
     """
     Hint: It is going to be very similar to MNISTClassification
     """
-    def __init_(self, model:nn.Module, loss_function:nn.Module, optimizer:PARTIAL_OPTIMIZER_TYPE)->None:
+    def __init__(self, model:nn.Module, optimizer: PARTIAL_OPTIMIZER_TYPE, loss_function: nn.Module)->None:
         super().__init__(optimizer)
 
         self.model = model
@@ -88,4 +88,9 @@ class CIFAR10Classification(TrainingTask):
         self.validation_accuracy(preds, labels)
         self.log("validation_accuracy", self.validation_accuracy, on_step=False, on_epoch=True)
     
+        def test_step(self, batch, _):
+        images, labels = batch
+        preds = self(images)
+        self.test_accuracy(preds, labels)
+        self.log("test_accuracy", self.test_accuracy, on_step=False, on_epoch=True)
 

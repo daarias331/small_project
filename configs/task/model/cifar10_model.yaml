@@ -1,6 +1,6 @@
 # You need to fill out this configuration file
 defaults:
-  - backbone: resnet18
+  - backbone: resnet50
   - adapter: linear_2048_10
   - head: identity_head
 

@@ -27,7 +27,7 @@ class MNISTClassification(TrainingTask):
 
         nrof_classes = 10
         self.train_accuracy = Accuracy(task="multiclass", num_classes=nrof_classes)
-        self.validaiton_accuracy = Accuracy(task="multiclass", num_classes=nrof_classes)
+        self.validation_accuracy = Accuracy(task="multiclass", num_classes=nrof_classes)
         self.test_accuracy = Accuracy(task="multiclass", num_classes=nrof_classes)
 
     def forward(self, x) -> Tensor:
@@ -45,8 +45,8 @@ class MNISTClassification(TrainingTask):
     def validation_step(self, batch, _):
         images, labels = batch
         preds = self(images)
-        self.validaiton_accuracy(preds, labels)
-        self.log("validation_accuracy", self.validaiton_accuracy, on_step=False, on_epoch=True)
+        self.validation_accuracy(preds, labels)
+        self.log("validation_accuracy", self.validation_accuracy, on_step=False, on_epoch=True)
 
     def test_step(self, batch, _):
         images, labels = batch
@@ -59,3 +59,33 @@ class CIFAR10Classification(TrainingTask):
     """
     Hint: It is going to be very similar to MNISTClassification
     """
+    def __init_(self, model:nn.Module, loss_function:nn.Module, optimizer:PARTIAL_OPTIMIZER_TYPE)->None:
+        super().__init__(optimizer)
+
+        self.model = model
+        self.loss_function = loss_function
+
+        nrof_classes = 10
+        self.train_accuracy = Accuracy(task="multiclass", num_classes=nrof_classes)
+        self.validation_accuracy = Accuracy(task="multiclass", num_classes=nrof_classes)
+        self.test_accuracy = Accuracy(task="multiclass", num_classes=nrof_classes)
+
+    def forward(self, x:Tensor)-> Tensor:
+        return self.model(x)
+    
+    def training_step(self, batch, _)->Tensor:
+        images, labels = batch
+        logits = self(images)
+        loss = self.loss_function(logits, labels)
+        self.train_accuracy(logits, labels)
+        self.log("train_loss", loss, on_step=True, on_epoch=True)
+        self.log("train_accuracy", self.train_accuracy, on_step=False, on_epoch=True)
+        return loss
+    
+    def validation_step(self, batch, _):
+        images, labels = batch
+        preds = self(images)
+        self.validation_accuracy(preds, labels)
+        self.log("validation_accuracy", self.validation_accuracy, on_step=False, on_epoch=True)
+    
+

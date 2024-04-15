@@ -1,1 +1,5 @@
 # You need to fill out this configuration file
+defaults:
+ - loss_function: cross_entropy
+ - model: ciphar10_model
+ - optimizer: adam

@@ -88,7 +88,7 @@ class CIFAR10Classification(TrainingTask):
         self.validation_accuracy(preds, labels)
         self.log("validation_accuracy", self.validation_accuracy, on_step=False, on_epoch=True)
     
-        def test_step(self, batch, _):
+    def test_step(self, batch, _):
         images, labels = batch
         preds = self(images)
         self.test_accuracy(preds, labels)
